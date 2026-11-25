@@ -22,37 +22,37 @@
 
     <main>
         <section class="galerie-container">
-            <div class="card-foto">
+            <div class="card-foto" onclick="deschidePoza(0)">
                 <img src="imagini/lalea-pestrita.jpg" alt="Laleaua pestriță">
                 <h3>Laleaua pestriță</h3>
                 <p><em>Fritillaria meleagris</em> - Specie rară protejată, întâlnită în pajiștile umede.</p>
             </div>
 
-            <div class="card-foto">
+            <div class="card-foto" onclick="deschidePoza(1)">
                 <img src="imagini/papucul-doamnei.jpg" alt="Papucul doamnei">
                 <h3>Papucul doamnei</h3>
                 <p><em>Cypripedium calceolus</em> - Orhidee sălbatică rară din zonele împădurite calcaroase.</p>
             </div>
 
-            <div class="card-foto">
+            <div class="card-foto" onclick="deschidePoza(2)">
                 <img src="imagini/roua-cerului.jpg" alt="Roua cerului">
                 <h3>Roua cerului</h3>
                 <p><em>Drosera rotundifolia</em> - Plantă insectivoră prezentă în turbăriile montane (ex. Valea Izbucelor).</p>
             </div>
 
-            <div class="card-foto">
+            <div class="card-foto" onclick="deschidePoza(3)">
                 <img src="imagini/clopotei.jpg" alt="Clopoței de munte">
                 <h3>Clopoței</h3>
                 <p><em>Campanula persicifolia</em> - Specie frecventă la liziera pădurilor din Pădurea Craiului.</p>
             </div>
 
-            <div class="card-foto">
+            <div class="card-foto" onclick="deschidePoza(4)">
                 <img src="imagini/poroinic.jpg" alt="Poroinic">
                 <h3>Poroinic</h3>
                 <p><em>Orchis morio</em> - Orhidee de pajiște răspândită în fânețele din depresiune.</p>
             </div>
 
-            <div class="card-foto">
+            <div class="card-foto" onclick="deschidePoza(5)">
                 <img src="imagini/narcise.jpg" alt="Narcise sălbatice">
                 <h3>Narcisa sălbatică</h3>
                 <p><em>Narcissus poeticus</em> - Întâlnită în poienile naturale din zona Bihorului.</p>
@@ -60,9 +60,67 @@
         </section>
     </main>
 
+    <div id="fereastra-poza" class="lightbox">
+        <span class="buton-inchide" onclick="inchidePoza()">&times;</span>
+        <button class="buton-nav inapoi" onclick="schimbaPoza(-1)">&#10094;</button>
+        
+        <div class="lightbox-continut">
+            <img id="poza-mare" src="" alt="Imagine mărită">
+            <h3 id="titlu-mare"></h3>
+            <p id="descriere-mare"></p>
+        </div>
+
+        <button class="buton-nav inainte" onclick="schimbaPoza(1)">&#10095;</button>
+    </div>
+
     <footer>
         <p>Proiect realizat în HTML & CSS &copy; 2026 - Capitolul Galerie</p>
     </footer>
+
+    <script>
+        let indexCurent = 0;
+        const carduri = document.querySelectorAll('.card-foto');
+
+        function deschidePoza(index) {
+            indexCurent = index;
+            actualizeazaFereastra();
+            document.getElementById('fereastra-poza').style.display = 'flex';
+        }
+
+        function inchidePoza() {
+            document.getElementById('fereastra-poza').style.display = 'none';
+        }
+
+        function schimbaPoza(directie) {
+            indexCurent += directie;
+            if (indexCurent >= carduri.length) {
+                indexCurent = 0;
+            } else if (indexCurent < 0) {
+                indexCurent = carduri.length - 1;
+            }
+            actualizeazaFereastra();
+        }
+
+        function actualizeazaFereastra() {
+            const card = carduri[indexCurent];
+            const imagine = card.querySelector('img').src;
+            const titlu = card.querySelector('h3').innerText;
+            const descriere = card.querySelector('p').innerHTML;
+
+            document.getElementById('poza-mare').src = imagine;
+            document.getElementById('titlu-mare').innerText = titlu;
+            document.getElementById('descriere-mare').innerHTML = descriere;
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const fereastra = document.getElementById('fereastra-poza');
+            if (fereastra.style.display === 'flex') {
+                if (event.key === 'ArrowRight') schimbaPoza(1);
+                if (event.key === 'ArrowLeft') schimbaPoza(-1);
+                if (event.key === 'Escape') inchidePoza();
+            }
+        });
+    </script>
 
 </body>
 </html>
